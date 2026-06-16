@@ -1,0 +1,51 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg mt-6">
+    <h2 class="text-2xl font-black text-white text-center mb-6">Zarejestruj się w systemie</h2>
+    
+    {% if form.errors %}
+        <div class="p-4 mb-4 bg-red-900/50 border border-red-700 text-red-200 rounded-lg text-xs">
+            <p class="font-bold mb-1">Popraw następujące błędy:</p>
+            <ul class="list-disc pl-4 space-y-1">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 text-sm">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div>
+                <label class="block text-gray-300 font-bold mb-1">{{ field.label }}</label>
+                <div class="text-gray-900 bg-gray-100 rounded-lg overflow-hidden">
+                    {% if field.name == 'rola' or field.name == 'zdjecie_identyfikacyjne' %}
+                        <div class="p-2 bg-gray-800 text-white border border-gray-700 rounded-lg">
+                            {{ field }}
+                        </div>
+                    {% else %}
+                        <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500">
+                    {% endif %}
+                </div>
+                {% if field.help_text %}
+                    <p class="text-xs text-gray-500 mt-1">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg transition shadow mt-6 cursor-pointer">
+            Utwórz konto
+        </button>
+    </form>
+    
+    <p class="text-xs text-center text-gray-400 mt-4">Masz już konto? <a href="{% url 'login' %}" class="text-red-400 hover:underline">Zaloguj się</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-700 pb-2">Panel Recepcji - Weryfikacja Klienta</h2>
+
+<div class="bg-gray-800 p-6 rounded-xl border border-gray-700 mb-6 shadow-md">
+    <form method="GET" action="{% url 'panel_recepcji' %}" class="flex gap-4">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Wpisz nazwisko lub adres e-mail klubowicza..." class="bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 w-full text-white focus:outline-none focus:border-blue-500">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded-lg transition shadow">Szukaj</button>
+    </form>
+</div>
+
+{% if query %}
+    {% if szukany_uzytkownik %}
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl max-w-2xl mx-auto">
+            <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                
+                <div class="w-48 h-48 bg-gray-900 border-2 border-gray-700 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
+                    {% if szukany_uzytkownik.zdjecie_identyfikacyjne %}
+                        <img src="{{ szukany_uzytkownik.zdjecie_identyfikacyjne.url }}" alt="Zdjęcie identyfikacyjne" class="w-full h-full object-cover">
+                    {% else %}
+                        <div class="text-center p-4 text-xs text-gray-500">
+                            <span class="block text-xl mb-1">⚠️</span> Brak zdjęcia weryfikacyjnego
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="flex-grow w-full text-center sm:text-left">
+                    <h3 class="text-2xl font-black text-white mb-1">{{ szukany_uzytkownik.first_name }} {{ szukany_uzytkownik.last_name }}</h3>
+                    <p class="text-sm text-gray-400 mb-4">E-mail: {{ szukany_uzytkownik.email }}</p>
+
+                    {% if aktualny_karnet and aktualny_karnet.czy_wazny %}
+                        <div class="bg-green-950 border border-green-700 text-green-400 p-4 rounded-xl text-center font-black tracking-wide text-lg shadow-inner">
+                            ✅ WSTĘP DOZWOLONY
+                            <span class="block text-xs font-normal text-green-500 mt-1">Karnet {{ aktualny_karnet.get_typ_display }} ważny do: {{ aktualny_karnet.data_do }}</span>
+                        </div>
+                    {% else %}
+                        <div class="bg-red-950 border border-red-700 text-red-400 p-4 rounded-xl text-center font-black tracking-wide text-lg shadow-inner">
+                            ❌ WSTĘP ZABLOKOWANY
+                            <span class="block text-xs font-normal text-red-500 mt-1">Brak ważnego karnetu w systemie!</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center p-12 bg-gray-800 rounded-xl border border-gray-700 text-gray-400">
+            Nie znaleziono użytkownika o podanych kryteriach. Spróbuj ponownie.
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

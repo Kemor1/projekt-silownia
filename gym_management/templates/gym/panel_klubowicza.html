@@ -1,0 +1,38 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-700 pb-2">Panel Klubowicza</h2>
+
+<div class="grid md:grid-cols-2 gap-6">
+    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+        <h3 class="text-lg font-bold text-red-400 mb-4 border-b border-gray-700 pb-1">Moje Karnety</h3>
+        {% for k in karnety %}
+            <div class="p-4 rounded-lg bg-gray-900 border {% if k.czy_wazny %}border-green-600/50{% else %}border-red-600/50{% endif %} mb-3">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-white">{{ k.get_typ_display }}</span>
+                    <span class="text-xs font-black uppercase {% if k.czy_wazny %}text-green-400{% else %}text-red-400{% endif %}">
+                        {% if k.czy_wazny %}Aktywny{% else %}Wygasł{% endif %}
+                    </span>
+                </div>
+                <p class="text-xs text-gray-400">Ważny od: {{ k.data_od }} do: {{ k.data_do }}</p>
+            </div>
+        {% empty %}
+            <p class="text-sm text-gray-500">Nie posiadasz obecnie żadnego karnetu. Udaj się do recepcji!</p>
+        {% endfor %}
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+        <h3 class="text-lg font-bold text-green-400 mb-4 border-b border-gray-700 pb-1">Mój Indywidualny Plan Treningowy</h3>
+        {% for p in plany %}
+            <div class="p-4 rounded-lg bg-gray-900 border border-gray-700 mb-3">
+                <p class="text-xs text-gray-400 mb-2">Przypisany dnia: {{ p.data_utworzenia }} przez Trenera {{ p.trener.last_name }}</p>
+                <div class="text-sm text-gray-200 whitespace-pre-line bg-gray-950 p-3 rounded border border-gray-800 font-mono">
+                    {{ p.opis_treningu }}
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-sm text-gray-500">Twój trener nie rozpisał Ci jeszcze indywidualnego planu.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

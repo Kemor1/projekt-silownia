@@ -1,0 +1,31 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-lg mt-12">
+    <h2 class="text-2xl font-black text-white text-center mb-6">Logowanie do systemu</h2>
+    
+    {% if form.errors %}
+        <div class="p-3 bg-red-900/50 border border-red-700 text-red-200 rounded-lg text-xs mb-4 text-center">
+            Niepoprawny login lub hasło! Spróbuj ponownie.
+        </div>
+    {% endif %}
+
+    <form method="POST" class="space-y-4 text-sm">
+        {% csrf_token %}
+        <div>
+            <label class="block text-gray-300 font-bold mb-1">Nazwa użytkownika (Login):</label>
+            <input type="text" name="username" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500">
+        </div>
+        <div>
+            <label class="block text-gray-300 font-bold mb-1">Hasło:</label>
+            <input type="password" name="password" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-red-500">
+        </div>
+        
+        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg transition shadow mt-6 cursor-pointer">
+            Zaloguj się
+        </button>
+    </form>
+    
+    <p class="text-xs text-center text-gray-400 mt-4">Nie masz jeszcze konta? <a href="{% url 'rejestracja' %}" class="text-red-400 hover:underline">Zarejestruj się</a></p>
+</div>
+{% endblock %}

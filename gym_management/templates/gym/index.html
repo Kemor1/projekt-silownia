@@ -1,0 +1,23 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<div class="text-center py-12">
+    <h1 class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">SYSTEM OBSŁUGI SIŁOWNI</h1>
+    <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">Zarządzaj swoimi treningami, sprawdzaj ważność karnetu i zapisuj się na zajęcia grupowe w kilka sekund.</p>
+    
+    <div class="grid md:grid-cols-3 gap-6 text-left mt-12">
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+            <h3 class="text-lg font-bold text-red-400 mb-2">Dla Klubowiczów</h3>
+            <p class="text-gray-400 text-sm">Sprawdź swój karnet, odbierz indywidualny plan treningowy od swojego trenera i rezerwuj miejsca na zajęciach.</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+            <h3 class="text-lg font-bold text-green-400 mb-2">Dla Trenerów</h3>
+            <p class="text-gray-400 text-sm">Prowadź kartoteki swoich podopiecznych, twórz dla nich rozpiski ćwiczeń i monitoruj ich postępy.</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+            <h3 class="text-lg font-bold text-blue-400 mb-2">Dla Recepcji</h3>
+            <p class="text-gray-400 text-sm">Szybka weryfikacja tożsamości klienta na podstawie zdjęcia profilowego oraz natychmiastowy status ważności karnetu.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

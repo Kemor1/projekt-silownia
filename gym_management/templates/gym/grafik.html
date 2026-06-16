@@ -1,0 +1,54 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-700 pb-2">Grafik Zajęć Grupowych</h2>
+
+<div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+    <table class="w-full text-left border-collapse">
+        <thead>
+            <tr class="bg-gray-700 text-gray-200 uppercase text-xs tracking-wider">
+                <th class="p-4">Nazwa zajęć</th>
+                <th class="p-4">Trener</th>
+                <th class="p-4">Data i Godzina</th>
+                <th class="p-4">Wolne miejsca</th>
+                <th class="p-4 text-center">Akcja</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700 text-sm">
+            {% for z in zajecia %}
+            <tr class="hover:bg-gray-750 transition">
+                <td class="p-4 font-semibold text-white">{{ z.nazwa }}</td>
+                <td class="p-4 text-gray-300">{{ z.trener.first_name }} {{ z.trener.last_name }}</td>
+                <td class="p-4 text-gray-400">{{ z.data_czas|date:"d M Y, H:i" }}</td>
+                <td class="p-4">
+                    <span class="px-2 py-1 rounded text-xs font-bold {% if z.wolne_miejsca > 0 %}bg-green-950 text-green-400{% else %}bg-red-950 text-red-400{% endif %}">
+                        {{ z.wolne_miejsca }} / {{ z.limit_miejsc }}
+                    </span>
+                </td>
+                <td class="p-4 text-center">
+                    {% if user.is_authenticated and user.rola == 'KLUBOWICZ' %}
+                        {% if z.id in zapisane_zajecia_ids %}
+                            <a href="{% url 'wypisz_z_zajec' z.id %}" class="bg-gray-600 hover:bg-gray-700 text-white text-xs px-3 py-1.5 rounded font-bold transition shadow">Wypisz się</a>
+                        {% else %}
+                            {% if z.wolne_miejsca > 0 %}
+                                <a href="{% url 'zapisz_na_zajecia' z.id %}" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded font-bold transition shadow">Zapisz się</a>
+                            {% else %}
+                                <span class="text-gray-500 text-xs">Brak miejsc</span>
+                            {% endif %}
+                        {% endif %}
+                    {% elif not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="text-xs text-gray-400 hover:underline">Zaloguj się, aby się zapisać</a>
+                    {% else %}
+                        <span class="text-gray-500 text-xs">-</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="p-8 text-center text-gray-500">Brak zaplanowanych zajęć w najbliższym czasie.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

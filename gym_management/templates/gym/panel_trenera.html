@@ -1,0 +1,47 @@
+{% extends 'gym/baza.html' %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-700 pb-2">Panel Trenera Personalnego</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    
+    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md">
+        <h3 class="text-lg font-bold mb-4 text-green-400">Utwórz nowy plan treningowy</h3>
+        
+        <form method="POST" class="space-y-4 text-sm">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div>
+                    <label class="block text-gray-300 font-bold mb-1">{{ field.label }}</label>
+                    {{ field.errors }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg transition shadow mt-4 cursor-pointer">
+                Zapisz i wyślij plan
+            </button>
+        </form>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-md flex flex-col justify-between">
+        <div>
+            <h3 class="text-lg font-bold mb-4 text-gray-200">Twoi aktywni podopieczni</h3>
+            <p class="text-xs text-gray-400 mb-4">Użytkownicy, którym stworzyłeś co najmniej jedną rozpiskę:</p>
+            
+            <ul class="divide-y divide-gray-700">
+                {% for p in podopieczni %}
+                    <li class="py-3 flex justify-between items-center">
+                        <span class="font-semibold text-white">{{ p.first_name }} {{ p.last_name }}</span>
+                        <span class="text-xs text-gray-400 font-mono">{{ p.username }}</span>
+                    </li>
+                {% empty %}
+                    <p class="text-sm text-gray-500 mt-4">Nie przypisałeś jeszcze żadnego planu treningowego.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

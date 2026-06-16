@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Obsługi Siłowni</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+
+    <nav class="bg-gray-800 border-b border-gray-700 p-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="{% url 'index' %}" class="text-xl font-bold text-red-500 tracking-wider">GYM_SYS</a>
+            <div class="space-x-4 flex items-center">
+                <a href="{% url 'publiczny_grafik' %}" class="hover:text-red-400 transition text-sm font-semibold">Publiczny Grafik</a>
+                
+                {% if user.is_authenticated %}
+                    {% if user.rola == 'KLUBOWICZ' %}
+                        <a href="{% url 'panel_klubowicza' %}" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-sm font-semibold transition">Mój Panel</a>
+                    {% elif user.rola == 'TRENER' %}
+                        <a href="{% url 'panel_trenera' %}" class="bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-sm font-semibold transition">Panel Trenera</a>
+                    {% elif user.rola == 'RECEPCJA' or user.rola == 'ADMIN' %}
+                        <a href="{% url 'panel_recepcji' %}" class="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm font-semibold transition">Weryfikacja Recepcji</a>
+                    {% endif %}
+                    
+                    <span class="text-gray-400 text-sm border-l border-gray-600 pl-4">Zalogowany: <strong>{{ user.username }}</strong></span>
+                    <form method="post" action="{% url 'logout' %}" class="inline m-0 p-0">
+                        {% csrf_token %}
+                        <button type="submit" class="text-xs text-gray-400 hover:text-red-400 underline cursor-pointer bg-transparent border-none">
+                            Wyloguj
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="hover:text-red-400 transition text-sm font-semibold">Zaloguj się</a>
+                    <a href="{% url 'rejestracja' %}" class="bg-gray-700 hover:bg-gray-600 px-4 py-1.5 rounded text-sm font-semibold transition">Zarejestruj się</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="max-w-4xl mx-auto mt-4 w-full px-4">
+        {% for message in messages %}
+            <div class="p-3 rounded {% if message.tags == 'success' %}bg-green-900 border border-green-700 text-green-200{% else %}bg-red-900 border border-red-700 text-red-200{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="flex-grow max-w-6xl w-full mx-auto p-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-center p-4 border-t border-gray-700 text-gray-500 text-sm">
+        &copy; 2026 System Obsługi Siłowni i Treningów Personalnych
+    </footer>
+
+</body>
+</html>
