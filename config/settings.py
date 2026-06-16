@@ -27,8 +27,14 @@ SECRET_KEY = 'django-insecure-y0^e)wx-qc#@ft%=mornuco4lx+w)0o#3k%%pp7d#33=5=*m%&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['silownia-tomek.azurewebsites.net', 'localhost', '127.0.0.1', '.azurewebsites.net']
-CSRF_TRUSTED_ORIGINS = ['https://silownia-tomek.azurewebsites.net', 'https://*.azurewebsites.net']
+ALLOWED_HOSTS = ['silownia-tomek.azurewebsites.net', 'localhost', '127.0.0.1', '.azurewebsites.net', '*']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://silownia-tomek.azurewebsites.net',
+    'https://*.azurewebsites.net',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+]
 
 
 # Application definition
