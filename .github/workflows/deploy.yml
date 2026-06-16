@@ -23,16 +23,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Downcase repository name
-      run: |
-        echo "REPO_LOWER=${{ github.repository }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
         push: true
-        tags: ghcr.io/${{ env.REPO_LOWER }}/web:latest
+        tags: ghcr.io/kemor1/projekt-silownia/web:latest
 
     - name: Log in to Azure
       uses: azure/login@v1
@@ -43,4 +39,4 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'silownia-tomek'
-        images: 'ghcr.io/${{ env.REPO_LOWER }}/web:latest'
+        images: 'ghcr.io/kemor1/projekt-silownia/web:latest'
